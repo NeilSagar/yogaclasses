@@ -3,6 +3,11 @@ import { useNavigate,Link } from "react-router-dom";
 
 import {saveSignUpDate} from "../api/api.js";
 
+const linkstyle={
+    color:"black",
+    textDecoration:"none"
+}
+
 function Signup(){
     const Navigate=useNavigate();
     // const [currdate,setCurrdate]=useState(new Date());
@@ -10,14 +15,21 @@ function Signup(){
     const [currdatestr,setCurrdatestr]=useState("");
     const [unknownError,setUnknownError]=useState(false);
     const [existUser,setExistUser]=useState(false);
+    const [diffPass,setDiffPass]=useState(false);
+    const [notFilled,setNotFilled]=useState(false);
+    const [batchrestrict,setBatchrestric]=useState(false);
     function handleFormChange(event){
         setUnknownError(false);
-
+        setNotFilled(false);
+        setBatchrestric(false);
         const name=event.target.name;
         let value=event.target.value;
         if(name==="emailId"){
             setExistUser(false);
             value=value.toLowerCase();
+        }
+        if(name==="confirmPassword"){
+            setDiffPass(false);
         }
         setFormData((prevVal)=>{
             return({
@@ -27,6 +39,18 @@ function Signup(){
         });
     }
     async function handleSubmit(){
+        if(formData.password!==formData.confirmPassword){
+            setDiffPass(true);
+            return;
+        }
+        if(formData.batchnum<1||formData.batchnum>4){
+            setBatchrestric(true);
+            return;
+        }
+        if(Object.keys(formData).length!==7){
+            setNotFilled(true);
+            return;
+        }
         const response=await saveSignUpDate(formData);
         if(response.status===201){
             Navigate("/Dashboard");
@@ -53,7 +77,7 @@ function Signup(){
     },[]);
 
     return (
-        <div className="Signup">
+        <div className="Signup form">
             <h1>Signup</h1>
             <input type="text" name="username" placeholder="Name?" 
             value={formData.username} onChange={handleFormChange}></input>
@@ -63,6 +87,7 @@ function Signup(){
 
             <input type="number" name="batchnum" placeholder="Batch?" 
             value={formData.batchnum} onChange={handleFormChange}></input>
+            {batchrestrict?<p style={{"color":"red"}}>Batch range 1 to 4</p>:<></>}
 
             <input type="date" name="date" value={currdatestr} disabled={true}/>
 
@@ -75,12 +100,13 @@ function Signup(){
             
             <input type="password" name="confirmPassword" placeholder="Please re-enter your password." 
             value={formData.confirmPassword} onChange={handleFormChange}></input>
-
+            {diffPass?<p style={{"color":"red"}}> Passwords not matching! </p>:<></>}
             <button onClick={handleSubmit}>Submit</button>
-            {existUser?<>User with this Email Already Exists</>:<></>}
-            {unknownError?<>Some Error Occured! Please try again later.</>:<></>}
+            {existUser?<p style={{"color":"red"}}>User with this Email Already Exists</p>:<></>}
+            {unknownError?<p style={{"color":"red"}}>Some Error Occured! Please try again later.</p>:<></>}
+            {notFilled?<p style={{"color":"red"}}>Some inputs are not filled</p>:<></>}
             <br/>
-            <Link to="/signin"> Sign In </Link>
+            <Link style={linkstyle} to="/signin"> Go to Sign In </Link>
         </div>
     );
 }

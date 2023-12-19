@@ -10,7 +10,6 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-     
       <Route path="/" element={<Signup/>}></Route>
       <Route path="/signin" element={<SignIn/>}></Route>
       <Route element={<PrivateComponent/>}>

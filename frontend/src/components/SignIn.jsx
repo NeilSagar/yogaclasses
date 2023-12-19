@@ -3,6 +3,11 @@ import {useNavigate,Link} from "react-router-dom";
 import Dashboard from "./Dashboard";
 import { signIn,getPersonDetails } from "../api/api";
 
+const linkstyle={
+    color:"black",
+    textDecoration:"none"
+}
+
 function SignIn(){
     const [userCred,setUserCred]=useState({
         emailId:"",
@@ -53,14 +58,10 @@ function SignIn(){
     }
     useEffect(()=>{
         if(validated){
-            //fetch details
             fetchdetails();
-            //update local storage
-
-            //navigate
-            
         }
     },[validated]);
+    
     useEffect(()=>{
         if(Object.keys(localstroageData).length!==0){
             localStorage.setItem("yogaUser",JSON.stringify(localstroageData));
@@ -68,7 +69,7 @@ function SignIn(){
         }
     },[localstroageData]);
     return (
-        <div className="Signup">
+        <div className="Signup form">
             <h3>Credential</h3>
             <input type="email" placeholder="Email?" name="emailId"
             value={userCred.emailId} onChange={handleChange}></input>
@@ -77,7 +78,7 @@ function SignIn(){
             <button onClick={handleSignIn}>Submit</button>
             {errormsg.length==0?<></>:<p>{errormsg}</p>}
             <br/>
-            <Link to="/"> Sign Up </Link>
+            <Link style={linkstyle} to="/"> Go to Sign Up </Link>
         </div>
     );
 }
