@@ -76,8 +76,8 @@ function Dashboard(){
         <p>Want to change batch?
         <select id="batch" name="batch" value={user.batchnum} 
         onChange={handleBatchChange}>
+            <option value="1">1</option>
             <option value="2">2</option>
-            <option value="12">12</option>
             <option value="3">3</option>
             <option value="4">4</option>
         </select>
