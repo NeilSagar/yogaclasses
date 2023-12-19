@@ -79,6 +79,8 @@ function Signup(){
             <button onClick={handleSubmit}>Submit</button>
             {existUser?<>User with this Email Already Exists</>:<></>}
             {unknownError?<>Some Error Occured! Please try again later.</>:<></>}
+            <br/>
+            <Link to="/signin"> Sign In </Link>
         </div>
     );
 }

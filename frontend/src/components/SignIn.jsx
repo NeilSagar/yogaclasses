@@ -76,6 +76,8 @@ function SignIn(){
             value={userCred.password} onChange={handleChange}></input>
             <button onClick={handleSignIn}>Submit</button>
             {errormsg.length==0?<></>:<p>{errormsg}</p>}
+            <br/>
+            <Link to="/"> Sign Up </Link>
         </div>
     );
 }
